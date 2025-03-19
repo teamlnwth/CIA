@@ -5,11 +5,24 @@ import Image from "next/image";
 export default function Home() {
   const [isClicked, setIsClicked] = useState(false);
   const [score, setScore] = useState(0); // สร้างสถานะสำหรับคะแนน
+  const [audio, setAudio] = useState(null); // สถานะสำหรับ audio object
 
   // ฟังก์ชันเปลี่ยนสถานะเมื่อคลิก
   const handleClick = () => {
     setIsClicked(!isClicked);
     setScore(score + 1); // เพิ่มคะแนนทุกครั้งที่คลิก
+
+    // เล่นเสียงเมื่อคลิก
+    if (audio) {
+      audio.play();
+    }
+  };
+
+  // สร้าง audio object เมื่อเริ่มโหลด
+  const loadAudio = () => {
+    const newAudio = new Audio("/song.mp3");
+    newAudio.loop = true; // ตั้งให้เพลงเล่นวนซ้ำ
+    setAudio(newAudio);
   };
 
   return (
@@ -24,7 +37,7 @@ export default function Home() {
       <div className="mt-4 text-xl sm:text-2xl font-bold text-center">
         <p>ตัดยางไปแล้ว: {score} ต้น</p> {/* แสดงคะแนน */}
       </div>
-      <div onClick={handleClick} className="cursor-pointer text-center">
+      <div onClick={handleClick} className="cursor-pointer text-center" onMouseEnter={loadAudio}>
         <Image 
           src={isClicked ? "/1.jpg" : "/1.jpg"} // เลือกภาพตามสถานะ
           alt="Popcat"
@@ -33,6 +46,7 @@ export default function Home() {
           className="rounded-lg mx-auto" // เพิ่มขอบมนให้กับภาพ และจัดกึ่งกลาง
         />
       </div>
+      
     </div>
   );
 }
