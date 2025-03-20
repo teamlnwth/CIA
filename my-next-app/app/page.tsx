@@ -35,7 +35,7 @@ export default function Home() {
 
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">ร๊าก อ้วน ที่สุด</h1>
       <div className="mt-4 text-xl sm:text-2xl font-bold text-center">
-        <p>วันนี้บอกแรกไปแล้ว: {score} ครั้ง</p> {/* แสดงคะแนน */}
+        <p>วันนี้บอกรักไปแล้ว: {score} ครั้ง</p> {/* แสดงคะแนน */}
       </div>
       <div onClick={handleClick} className="cursor-pointer text-center mt-8">
         <Image 
