@@ -17,26 +17,29 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const newAudio = new Audio("/song.mp3"); // สร้าง audio object
+    const newAudio = new Audio("/song.mp3"); // สร้าง audio object 
     newAudio.loop = true; // ตั้งค่าให้เสียงเล่นซ้ำ
     setAudio(newAudio); // ตั้งค่า audio state เป็น newAudio
   }, []); // จะทำงานครั้งแรกเมื่อ component ถูก render
 
   return (
     <div className="relative min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      {/* พื้นหลังจาง ๆ อยู่ที่เลเยอร์ล่างสุด */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-20 z-[-1]"
-        style={{ backgroundImage: 'url("/2.jpg")' }} // พื้นหลังจาง
-      ></div>
+      {/* พื้นหลังคลิปวิดีโอ */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover z-[-1]" 
+        autoPlay loop muted
+      >
+        <source src="/2.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">หลบมาตัดยางหว่าเรา</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">ร๊าก อ้วน ที่สุด</h1>
       <div className="mt-4 text-xl sm:text-2xl font-bold text-center">
-        <p>ตัดยางไปแล้ว: {score} ต้น</p> {/* แสดงคะแนน */}
+        <p>วันนี้บอกแรกไปแล้ว: {score} ครั้ง</p> {/* แสดงคะแนน */}
       </div>
       <div onClick={handleClick} className="cursor-pointer text-center mt-8">
         <Image 
-          src={isClicked ? "/1.jpg" : "/1.jpg"} // เลือกภาพตามสถานะ
+          src={isClicked ? "/1.jpg" : "/3.jpg"} // เลือกภาพตามสถานะ
           alt="Popcat"
           width={500}  // กำหนดขนาดภาพ
           height={500}
