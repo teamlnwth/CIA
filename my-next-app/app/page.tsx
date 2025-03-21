@@ -4,29 +4,30 @@ import Image from "next/image";
 
 export default function Home() {
   const [isClicked, setIsClicked] = useState(false);
-  const [score, setScore] = useState(0); // สร้างสถานะสำหรับคะแนน
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null); // กำหนดประเภทของ audio เป็น HTMLAudioElement หรือ null
+  const [score, setScore] = useState(0);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [isAnimated, setIsAnimated] = useState(false); // สำหรับจัดการแอนิเมชัน
 
-  // ฟังก์ชันเปลี่ยนสถานะเมื่อคลิก
   const handleClick = () => {
     setIsClicked(!isClicked);
-    setScore(score + 1); // เพิ่มคะแนนทุกครั้งที่คลิก
+    setScore(score + 1);
     if (audio) {
-      audio.play(); // เล่นเสียงเมื่อคลิก
+      audio.play();
     }
+    setIsAnimated(true);
+    setTimeout(() => setIsAnimated(false), 300); // รีเซ็ตแอนิเมชันหลังจาก 300 มิลลิวินาที
   };
 
   useEffect(() => {
-    const newAudio = new Audio("/song.mp3"); // สร้าง audio object 
-    newAudio.loop = true; // ตั้งค่าให้เสียงเล่นซ้ำ
-    setAudio(newAudio); // ตั้งค่า audio state เป็น newAudio
-  }, []); // จะทำงานครั้งแรกเมื่อ component ถูก render
+    const newAudio = new Audio("/song.mp3");
+    newAudio.loop = true;
+    setAudio(newAudio);
+  }, []);
 
   return (
     <div className="relative min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      {/* พื้นหลังคลิปวิดีโอ */}
       <video
-        className="absolute inset-0 w-full h-full object-cover z-[-1]" 
+        className="absolute inset-0 w-full h-full object-cover z-[-1]"
         autoPlay loop muted
       >
         <source src="/2.mp4" type="video/mp4" />
@@ -35,22 +36,31 @@ export default function Home() {
 
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">ร๊าก อ้วน ที่สุด</h1>
       <div className="mt-4 text-xl sm:text-2xl font-bold text-center">
-        <p>วันนี้บอกรักไปแล้ว: {score} ครั้ง</p> {/* แสดงคะแนน */}
+        <p>วันนี้คิดถึงไป: {score} ครั้ง</p>
       </div>
-      <div onClick={handleClick} className="cursor-pointer text-center mt-8">
-        <Image 
-          src={isClicked ? "/1.jpg" : "/3.jpg"} // เลือกภาพตามสถานะ
+
+      <div
+        onClick={handleClick}
+        className={`cursor-pointer text-center mt-8 transition-transform duration-300 ${isAnimated ? "scale-110" : "scale-100"}`}
+      >
+        <Image
+          src={isClicked ? "/1.jpg" : "/3.jpg"}
           alt="Popcat"
-          width={500}  // กำหนดขนาดภาพ
+          width={500}
           height={500}
-          className="rounded-lg mx-auto" // เพิ่มขอบมนให้กับภาพ และจัดกึ่งกลาง
+          className="rounded-lg mx-auto"
         />
       </div>
 
-      {/* แสดงข้อความถ้าเสียงไม่สามารถเล่นได้ */}
+      {/* เพิ่มการเปลี่ยนสีของข้อความเมื่อคลิก */}
+      <div className="text-center mt-4">
+        <p className={`text-xl sm:text-2xl font-bold ${score >= 10 ? 'text-red-500' : 'text-black'}`}>
+          {score >= 15 ? 'คิดถึงมากเลยอ่ะะะดิ่' : 'คิดถึงเค้าแค่นี้เองหรอออ'}
+        </p>
+      </div>
+
       {!audio && <p className="text-center text-red-500 mt-4">ไม่สามารถเล่นเสียงได้</p>}
-      
-      {/* ฝัง MP3 ให้เล่นอัตโนมัติ (เมื่อเสียงเล่นได้) */}
+
       {audio && (
         <audio autoPlay loop>
           <source src="/song.mp3" type="audio/mp3" />
