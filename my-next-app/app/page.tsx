@@ -44,7 +44,7 @@ export default function Home() {
         className={`cursor-pointer text-center mt-8 transition-transform duration-300 ${isAnimated ? "scale-110" : "scale-100"}`}
       >
         <Image
-          src={isClicked ? "/1.jpg" : "/3.jpg"}
+          src={isClicked ? "/1.jpg" : (score >= 10 ? "/4.jpg" : "/5.jpg")}
           alt="Popcat"
           width={500}
           height={500}
